@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',   // 👈 needed for static export
+  basePath: '/your-repo-name', // 👈 replace with your repo name
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -7,7 +9,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    unoptimized: true, // GitHub Pages doesn’t support Next.js image optimization
   },
 }
 
