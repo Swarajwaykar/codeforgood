@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',   // 👈 needed for static export
-  basePath: '/your-repo-name', // 👈 replace with your repo name
+  basePath: '/codeforgood', // 👈 replace with your repo name
   eslint: {
     ignoreDuringBuilds: true,
   },
