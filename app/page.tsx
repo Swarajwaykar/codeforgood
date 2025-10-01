@@ -10,19 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import Image from "next/image"
 import Link from "next/link"
-import {
-  Github,
-  Linkedin,
-  Mail,
-  Phone,
-  MapPin,
-  Code2,
-  ExternalLink,
-  Trophy,
-  GraduationCap,
-  Sparkles,
-} from "lucide-react"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { Github, Linkedin, Mail, Phone, MapPin, Code2, ExternalLink, Trophy, GraduationCap } from "lucide-react"
 
 /* Simple stagger helpers */
 const fadeUp = (delay = 0) => ({
@@ -39,100 +27,14 @@ function Section({
 }: { id: string; title: string; subtitle?: string; children: React.ReactNode }) {
   return (
     <section id={id} className="container mx-auto px-4 py-16 md:py-24">
-      <motion.header {...fadeUp(0)}>
+      <motion.header {...fadeUp(0)} className="text-center">
         <h2 className="font-display text-balance text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight">
           {title}
         </h2>
-        {subtitle ? <p className="mt-3 max-w-2xl text-muted-foreground leading-relaxed">{subtitle}</p> : null}
+        {subtitle ? <p className="mt-3 max-w-2xl text-muted-foreground leading-relaxed mx-auto">{subtitle}</p> : null}
       </motion.header>
       <div className="mt-8 md:mt-12">{children}</div>
     </section>
-  )
-}
-
-/* Particles background for hero */
-function Particles() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const particles = useMemo(
-    () =>
-      Array.from({ length: 100 }, () => ({
-        x: Math.random(),
-        y: Math.random(),
-        vx: (Math.random() - 0.5) * 0.0006,
-        vy: (Math.random() - 0.5) * 0.0006,
-        r: Math.random() * 1.8 + 0.4,
-        c: ["var(--brand-blue)", "var(--brand-purple)", "var(--brand-green)"][Math.floor(Math.random() * 3)],
-      })),
-    [],
-  )
-
-  useEffect(() => {
-    const canvas = canvasRef.current!
-    if (!canvas) return
-    const ctx = canvas.getContext("2d")!
-    let raf = 0
-
-    const draw = () => {
-      const w = (canvas.width = canvas.clientWidth * devicePixelRatio)
-      const h = (canvas.height = canvas.clientHeight * devicePixelRatio)
-      ctx.clearRect(0, 0, w, h)
-      particles.forEach((p) => {
-        p.x += p.vx
-        p.y += p.vy
-        if (p.x < 0 || p.x > 1) p.vx *= -1
-        if (p.y < 0 || p.y > 1) p.vy *= -1
-        const gx = p.x * w,
-          gy = p.y * h
-        ctx.beginPath()
-        ctx.arc(gx, gy, p.r * devicePixelRatio, 0, Math.PI * 2)
-        ctx.fillStyle = p.c
-        ctx.globalAlpha = 0.8
-        ctx.fill()
-      })
-      raf = requestAnimationFrame(draw)
-    }
-    raf = requestAnimationFrame(draw)
-    return () => cancelAnimationFrame(raf)
-  }, [particles])
-
-  return (
-    <canvas ref={canvasRef} aria-hidden className="pointer-events-none absolute inset-0 h-full w-full opacity-60" />
-  )
-}
-
-/* Typing animation for tagline */
-function Typing({ phrases }: { phrases: string[] }) {
-  const [text, setText] = useState("")
-  const [i, setI] = useState(0)
-  const [dir, setDir] = useState<"typing" | "erasing">("typing")
-
-  useEffect(() => {
-    const full = phrases[i % phrases.length]
-    const tick = setTimeout(
-      () => {
-        if (dir === "typing") {
-          const next = full.slice(0, text.length + 1)
-          setText(next)
-          if (next === full) setDir("erasing")
-        } else {
-          const next = full.slice(0, Math.max(0, text.length - 1))
-          setText(next)
-          if (next.length === 0) {
-            setDir("typing")
-            setI((v) => (v + 1) % phrases.length)
-          }
-        }
-      },
-      dir === "typing" ? 65 : 35,
-    )
-    return () => clearTimeout(tick)
-  }, [text, dir, i, phrases])
-
-  return (
-    <span className="relative">
-      {text}
-      <span className="ml-0.5 inline-block h-5 w-[2px] animate-pulse bg-primary align-middle" />
-    </span>
   )
 }
 
@@ -146,31 +48,56 @@ function ProjectCard({
   tags,
   href,
   repo,
-}: { title: string; summary: string; tags: string[]; href?: string; repo?: string }) {
+  imageSrc,
+  imageAlt,
+}: {
+  title: string
+  summary: string
+  tags: string[]
+  href?: string
+  repo?: string
+  imageSrc?: string
+  imageAlt?: string
+}) {
   return (
     <motion.div {...fadeUp(0.05)}>
       <Card className="tilt-card glass neon-border transition hover:shadow-lg hover:shadow-primary/20">
         <CardHeader>
-          <CardTitle className="font-display text-xl">{title}</CardTitle>
+          <CardTitle className="font-display text-xl text-center">{title}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-muted-foreground">{summary}</p>
-          <div className="flex flex-wrap gap-2">
-            {tags.map((t) => (
-              <Pill key={t}>{t}</Pill>
-            ))}
-          </div>
-          <div className="flex items-center gap-4 pt-2">
-            {href ? (
-              <Link href={href} className="inline-flex items-center gap-1 text-primary hover:underline">
-                <ExternalLink size={16} /> Demo
-              </Link>
+        <CardContent>
+          <div className="flex items-start gap-4">
+            {imageSrc ? (
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md border border-white/10">
+                <Image
+                  src={imageSrc || "/placeholder.svg"}
+                  alt={imageAlt || `${title} thumbnail`}
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                />
+              </div>
             ) : null}
-            {repo ? (
-              <Link href={repo} className="inline-flex items-center gap-1 text-primary hover:underline">
-                <Github size={16} /> Code
-              </Link>
-            ) : null}
+            <div className="space-y-4">
+              <p className="text-muted-foreground">{summary}</p>
+              <div className="flex flex-wrap gap-2">
+                {tags.map((t) => (
+                  <Pill key={t}>{t}</Pill>
+                ))}
+              </div>
+              <div className="flex items-center gap-4 pt-2">
+                {href ? (
+                  <Link href={href} className="inline-flex items-center gap-1 text-primary hover:underline">
+                    <ExternalLink size={16} /> Demo
+                  </Link>
+                ) : null}
+                {repo ? (
+                  <Link href={repo} className="inline-flex items-center gap-1 text-primary hover:underline">
+                    <Github size={16} /> Code
+                  </Link>
+                ) : null}
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -181,66 +108,57 @@ function ProjectCard({
 export default function Page() {
   return (
     <main className="relative">
-      {/* HERO */}
-      <section id="hero" className="relative isolate overflow-hidden">
-        <div className="absolute inset-0">
-          <Particles />
-        </div>
-        <div className="container relative z-10 mx-auto grid min-h-[80svh] grid-cols-1 items-center gap-10 px-4 py-24 md:grid-cols-2">
-          <div className="flex flex-col items-start justify-center gap-6">
-            <motion.div {...fadeUp(0)}>
-              <span className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs text-muted-foreground">
-                <Sparkles size={14} className="text-primary" />
-                {"Portfolio • 2025"}
-              </span>
-            </motion.div>
-
+      {/* HERO (reference-style) */}
+      <section id="hero" className="relative">
+        <div className="container mx-auto grid min-h-[70svh] grid-cols-1 place-items-center gap-10 px-4 py-24 md:grid-cols-2">
+          {/* Left: text block */}
+          <div className="max-w-xl text-center">
             <motion.h1
-              className="font-display neon-text shimmer-text text-balance text-4xl leading-tight md:text-6xl lg:text-7xl"
-              {...fadeUp(0.05)}
+              className="text-balance text-4xl font-semibold leading-tight md:text-5xl lg:text-6xl"
+              {...fadeUp(0)}
             >
               {"Swaraj Shahaji Waykar"}
             </motion.h1>
 
-            <motion.p className="text-lg text-muted-foreground" {...fadeUp(0.1)}>
-              <Typing phrases={["Full Stack Developer", "AI & Cloud Enthusiast", "Problem Solver"]} />
+            <motion.p className="mt-3 text-base text-muted-foreground" {...fadeUp(0.05)}>
+              {"Computer Science "}
             </motion.p>
 
-            <motion.div className="mt-2 flex flex-wrap items-center gap-3" {...fadeUp(0.6)}>
-              <Link href="#projects">
-                <Button className="btn-glow font-display neon-border bg-primary text-primary-foreground hover:bg-primary/90">
-                  {"View My Work"}
+            <motion.p className="mt-4 text-base leading-7 text-muted-foreground" {...fadeUp(0.1)}>
+              {
+                "Motivated Computer Science student with hands-on experience in Software development and building scalable applications .Proficient in Java and growing expertise in Spring Boot framework.Worked with cross functional teams to solve real-world problems through projects and hackathons,demonstrating adaptability,and a commitment to continuous learning and innovation."
+              }
+            </motion.p>
+
+            <motion.div className="mt-6 flex flex-wrap items-center justify-center gap-2" {...fadeUp(0.15)}>
+              <Link href="https://github.com/Swarajwaykar?tab=repositories">
+                <Button variant="outline" size="sm" className="rounded-full bg-transparent">
+                  GitHub
                 </Button>
               </Link>
-              <div className="flex items-center gap-3">
-                <Link
-                  href="https://github.com/Swarajwaykar?tab=repositories"
-                  className="text-muted-foreground hover:text-primary"
-                  aria-label="GitHub"
-                >
-                  <Github />
-                </Link>
-                <Link
-                  href="https://www.linkedin.com/in/swaraj-waykar-a56290258/"
-                  className="text-muted-foreground hover:text-primary"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin />
-                </Link>
-              </div>
+              <Link href="https://www.linkedin.com/in/swaraj-waykar-a56290258/">
+                <Button variant="outline" size="sm" className="rounded-full bg-transparent">
+                  LinkedIn
+                </Button>
+              </Link>
+              <Link href="https://drive.google.com/file/d/19K-55pWkYVuPbJWOFV2YQwCxhzlbgfTm/view?usp=sharing">
+                <Button size="sm" className="rounded-full">
+                  View Resume
+                </Button>
+              </Link>
             </motion.div>
           </div>
 
-          {/* right column: profile image */}
-          <motion.div className="relative mx-auto md:mx-0" {...fadeUp(0.12)}>
-            <div className="relative h-56 w-56 md:h-64 md:w-64">
+          {/* Right: profile image card */}
+          <motion.div className="justify-self-center md:justify-self-start" {...fadeUp(0.12)}>
+            <div className="relative h-52 w-52 overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-xl md:h-60 md:w-60">
               <Image
                 src="/images/swa.png"
                 alt="Profile photo"
                 fill
+                sizes="(min-width: 768px) 240px, 208px"
+                className="object-cover"
                 priority
-                sizes="(min-width: 768px) 256px, 224px"
-                className="rounded-full object-cover neon-border"
               />
             </div>
           </motion.div>
@@ -255,13 +173,7 @@ export default function Page() {
       >
         <motion.div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[220px,1fr]" {...fadeUp(0.05)}>
           <div className="relative">
-            <Image
-              src="/images/swa.png"
-              alt="Profile photo"
-              width={220}
-              height={220}
-              className="h-52 w-52 rounded-full object-cover neon-border"
-            />
+            
           </div>
           <Card className="tilt-card glass neon-border">
             <CardContent className="space-y-4 p-6">
@@ -330,7 +242,7 @@ export default function Page() {
 
       {/* PROJECTS */}
       <Section id="projects" title="Projects" subtitle="Modern cards with hover and neon glow.">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6">
           <ProjectCard
             title="Companion-Way: AI Travel Buddy"
             summary="• Developed an AI-powered assistant with real-time facial emotion recognition for solo travelers.
@@ -341,8 +253,10 @@ export default function Page() {
 
  • Enhanced system responsiveness and reliability through emotion-aware conversation flows, improving user
  engagement in prototype testing"
-            tags={["AI", "Emotion Recognition", "Microsevises", "Python"]}
+            tags={["AI", "Emotion Recognition", "Microsevises"]}
             repo="https://github.com/Swarajwaykar/AI-Travel-Buddy-App"
+            imageSrc="/ai-travel-assistant-app-thumbnail.jpg"
+            imageAlt="AI Travel Buddy thumbnail"
           />
           <ProjectCard
             title="ServiSwift"
@@ -352,6 +266,8 @@ export default function Page() {
  • Set up CI/CD pipelines using GitHub Actions for automated testing and deployment."
             tags={["Spring Boot", "React", "Docker", "CI/CD"]}
             repo="https://github.com/Swarajwaykar/ServiSwift"
+            imageSrc="/services-marketplace-thumbnail.jpg"
+            imageAlt="ServiSwift thumbnail"
           />
         </div>
       </Section>
@@ -574,7 +490,7 @@ export default function Page() {
       </Section>
 
       <footer className="border-t border-border/60 py-8 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} {"Swaraj Shahaji Waykar"}. {"Built with Next.js, Tailwind, and Framer Motion."}
+        {new Date().getFullYear()} {"Swaraj Shahaji Waykar"}.
       </footer>
     </main>
   )

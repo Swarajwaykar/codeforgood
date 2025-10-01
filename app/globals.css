@@ -37,8 +37,9 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --brand-primary: oklch(0.7 0.16 245); /* blue */
-  --brand-accent: oklch(0.72 0.09 200); /* teal */
+  /* add brand hues for subtle corner glows to match the reference */
+  --brand-primary: oklch(0.4 0.08 255); /* deep blue */
+  --brand-accent: oklch(0.62 0.12 240); /* lighter blue */
 }
 
 .dark {
@@ -121,25 +122,32 @@
   }
   html {
     scroll-behavior: smooth; /* smooth scrolling */
+    font-size: 17px; /* increase base font size for better readability on small screens */
+  }
+  @media (min-width: 768px) {
+    html {
+      font-size: 18px; /* scale up base size on medium+ screens */
+    }
   }
   body {
     @apply bg-background text-foreground antialiased;
     background-image: radial-gradient(
         1000px 600px at -10% -10%,
-        color-mix(in oklab, var(--brand-primary) 12%, transparent 88%) 0%,
+        color-mix(in oklab, var(--brand-primary) 12%, transparent) 0%,
         transparent 60%
       ),
       radial-gradient(
         900px 500px at 110% -20%,
-        color-mix(in oklab, var(--brand-accent) 12%, transparent 88%) 0%,
+        color-mix(in oklab, var(--brand-accent) 12%, transparent) 0%,
         transparent 60%
       ),
       radial-gradient(
         600px 400px at 50% 120%,
-        color-mix(in oklab, var(--brand-accent) 10%, transparent 90%) 0%,
+        color-mix(in oklab, var(--brand-accent) 10%, transparent) 0%,
         transparent 60%
       );
     background-attachment: fixed;
+    line-height: 1.65; /* slightly increase global line-height for readability with larger fonts */
   }
 
   /* apply display font to headings */
@@ -224,4 +232,20 @@
     transparent
   );
   opacity: 0.6;
+}
+
+/* add caret-blink keyframes and utility to replace plugin usage */
+@keyframes caret-blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.animate-caret-blink {
+  animation: caret-blink 1s steps(2, start) infinite;
 }
