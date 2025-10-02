@@ -107,7 +107,7 @@ function ProjectCard({
 
 export default function Page() {
   return (
-    <main className="relative">
+    <main className="relative mx-auto max-w-6xl px-4">
       {/* HERO (reference-style) */}
       <section id="hero" className="relative">
         <div className="container mx-auto grid min-h-[70svh] grid-cols-1 place-items-center gap-10 px-4 py-24 md:grid-cols-2">
@@ -150,7 +150,7 @@ export default function Page() {
           </div>
 
           {/* Right: profile image card */}
-          <motion.div className="justify-self-center md:justify-self-start" {...fadeUp(0.12)}>
+          <motion.div className="justify-self-center md:justify-self-center" {...fadeUp(0.12)}>
             <div className="relative h-52 w-52 overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-xl md:h-60 md:w-60">
               <Image
                 src="/images/swa.png"
@@ -172,9 +172,7 @@ export default function Page() {
         subtitle="Motivated Computer Science student with hands-on experience in building scalable applications. Proficient in Java, Spring Boot, Cloud, and AI. Passionate about solving real-world problems through technology, projects, and hackathons."
       >
         <motion.div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[220px,1fr]" {...fadeUp(0.05)}>
-          <div className="relative">
-            
-          </div>
+          <div className="relative"></div>
           <Card className="tilt-card glass neon-border">
             <CardContent className="space-y-4 p-6">
               <p className="leading-relaxed">
@@ -196,7 +194,10 @@ export default function Page() {
 
       {/* SKILLS */}
       <Section id="skills" title="Skills">
-        <motion.div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" {...fadeUp(0.05)}>
+        <motion.div
+          className="mx-auto max-w-6xl grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          {...fadeUp(0.05)}
+        >
           {[
             { h: "Programming", items: ["Java", "SQL"] },
             { h: "Frameworks & DB", items: ["Spring Boot", "React", "MySQL"] },
@@ -242,7 +243,7 @@ export default function Page() {
 
       {/* PROJECTS */}
       <Section id="projects" title="Projects" subtitle="Modern cards with hover and neon glow.">
-        <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6">
           <ProjectCard
             title="Companion-Way: AI Travel Buddy"
             summary="• Developed an AI-powered assistant with real-time facial emotion recognition for solo travelers.
@@ -255,7 +256,7 @@ export default function Page() {
  engagement in prototype testing"
             tags={["AI", "Emotion Recognition", "Microsevises"]}
             repo="https://github.com/Swarajwaykar/AI-Travel-Buddy-App"
-            imageSrc="/ai-travel-assistant-app-thumbnail.jpg"
+            imageSrc="/ai-travel-buddy-app-thumbnail.jpg"
             imageAlt="AI Travel Buddy thumbnail"
           />
           <ProjectCard
@@ -308,7 +309,7 @@ export default function Page() {
 
       {/* LEADERSHIP */}
       <Section id="leadership" title="Leadership">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="mx-auto max-w-6xl grid grid-cols-1 gap-4 md:grid-cols-2">
           <Card className="tilt-card glass neon-border">
             <CardHeader>
               <CardTitle className="font-display">Technical Event Head – Competitive Coding Club</CardTitle>
@@ -326,7 +327,7 @@ export default function Page() {
 
       {/* ACHIEVEMENTS */}
       <Section id="achievements" title="Achievements & Certifications">
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="mx-auto max-w-6xl grid grid-cols-1 gap-4 lg:grid-cols-2">
           <Card className="tilt-card glass neon-border">
             <CardHeader className="flex-row items-center justify-between">
               <CardTitle className="font-display">Highlights</CardTitle>
@@ -354,9 +355,9 @@ export default function Page() {
           </Card>
         </div>
 
-        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="mt-8 mx-auto max-w-6xl grid grid-cols-1 gap-6 md:grid-cols-3">
           <figure className="glass neon-border rounded-lg p-3">
-            <div className="relative h-56 w-full overflow-hidden rounded-md md:h-64">
+            <div className="relative h-72 w-full overflow-hidden rounded-md md:h-80">
               <Image
                 src="/images/achievements/apptware-48h-runner-up.png"
                 alt="Group at hackathon venue holding prize cheque"
@@ -372,7 +373,7 @@ export default function Page() {
           </figure>
 
           <figure className="glass neon-border rounded-lg p-3">
-            <div className="relative h-56 w-full overflow-hidden rounded-md md:h-64">
+            <div className="relative h-72 w-full overflow-hidden rounded-md md:h-80">
               <Image
                 src="/images/achievements/avinya-24h-best-performer.png"
                 alt="Hackathon workspace with participants working on laptops"
@@ -387,7 +388,7 @@ export default function Page() {
           </figure>
 
           <figure className="glass neon-border rounded-lg p-3">
-            <div className="relative h-56 w-full overflow-hidden rounded-md md:h-64">
+            <div className="relative h-72 w-full overflow-hidden rounded-md md:h-80">
               <Image
                 src="/images/achievements/codwolf-organizer.png"
                 alt="Audience seated during a club event while speakers present"
